@@ -5,3 +5,5 @@
 **/venv/Scripts
 
 **/.vscode
+**/.idea
+**/*cache*

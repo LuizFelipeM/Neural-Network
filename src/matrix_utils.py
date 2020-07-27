@@ -1,24 +1,70 @@
-def matrix_sum(*matrices):
-    value = matrices[0].copy()
-    biggestLen = 0
+def initialize(dimY, dimX):
+    result = []
+    for y in range(dimY):
+        row = []
+        for x in range(dimX):
+            row.append(0)
+        result.append(row)
+    return result
 
-    for matrix in matrices:
-        for row in matrix:
-            if len(row) > biggestLen:
-                biggestLen = len(row)
+def lengths(matrix):
+    xDim = len(matrix)
+    yDim = len(matrix[0]) if isinstance(matrix[0], list) else 1
+    return (xDim, yDim)
 
-    for matrix in matrices:
-        for row in matrix:
-            if len(row) != biggestLen:
-                raise Exception("Error - matrices has different lengths")
 
+def sum(*matrices):
+    dims = lengths(matrices[0])
     for matrix in matrices:
-        if matrices.index(matrix) == 0:
+        if dims[0] != lengths(matrix)[0] or dims[1] != lengths(matrix)[1]:
+            raise Exception("Matrices' lengths do not match! \n\n"
+                            + str(lengths(matrix))
+                            + str(lengths(matrices[0]))
+                            )
+
+    result = []
+    for matrix in matrices:
+        if result == []:
+            result = matrix.copy()
             continue
 
-        for row in value:
-            rowMatrix = matrix[value.index(row)]
-            for cell in rowMatrix:
-                value[value.index(row)][rowMatrix.index(cell)] += cell
+        # 2d matrix
+        if isinstance(matrix[0], list):
+            for row in range(len(matrix)):
+                for col in range(len(matrix[0])):
+                    result[row][col] += matrix[row][col]
+        # 1d vector
+        else:
+            for index in range(len(matrix)):
+                result[index] += matrix[index]
 
-    return value
+    return result
+
+def mult(matrix1, matrix2):
+    dims1 = lengths(matrix1)
+    dims2 = lengths(matrix2)
+
+    if dims1[1] != dims2[0]:
+        raise Exception("Matrices' row and column does not match! \n\n"
+                        + str(lengths(matrix1))
+                        + str(lengths(matrix2))
+                        )
+
+    result = initialize(dims1[0], dims2[1])
+
+    for row in range(len(matrix1)):
+        for row2 in range(len(matrix2)):
+            for col2 in range(len(matrix2[row2])):
+                val1 = matrix1[row][row2]
+                val2 = matrix2[row2][col2]
+                result[row][col2] += val1 * val2
+
+    return result
+
+    # [1, 2]    [-1, 3]
+    # [3, 4] x  [ 4, 2]
+
+
+x = mult([[2, 3], [0, 1], [-1, 4]], [[1, 2, 3], [-2, 0, 4]])
+
+
