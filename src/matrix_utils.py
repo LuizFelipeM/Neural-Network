@@ -1,3 +1,12 @@
+def initialize(dimY, dimX):
+    result = []
+    for y in range(dimY):
+        row = []
+        for x in range(dimX):
+            row.append(0)
+        result.append(row)
+    return result
+
 def lengths(matrix):
     xDim = len(matrix)
     yDim = len(matrix[0]) if isinstance(matrix[0], list) else 1
@@ -41,7 +50,7 @@ def mult(matrice1, matrice2):
                         + str(lengths(matrice2))
                         )
 
-    result = [[0]*dims2[1]]*dims1[0]
+    result = initialize()[[0]*dims2[1]]*dims1[0]
 
     for row in range(len(matrice1)):
         for row2 in range(len(matrice2)):
@@ -55,3 +64,5 @@ def mult(matrice1, matrice2):
 
 
 x = mult([[2, 3], [0, 1], [-1, 4]], [[1, 2, 3], [-2, 0, 4]])
+
+
