@@ -1,24 +1,29 @@
-def matrix_sum(*matrices):
-    value = matrices[0].copy()
-    biggestLen = 0
+def lengths(matrix):
+    xDim = len(matrix)
+    yDim = len(matrix[0]) if isinstance(matrix[0], list) else 1
+    return (xDim, yDim)
 
-    for matrix in matrices:
-        for row in matrix:
-            if len(row) > biggestLen:
-                biggestLen = len(row)
 
+def sum(*matrices):
+    dims = lengths(matrices[0])
     for matrix in matrices:
-        for row in matrix:
-            if len(row) != biggestLen:
-                raise Exception("Error - matrices has different lengths")
+        if dims[0] != lengths(matrix)[0] or dims[1] != lengths(matrix)[1]:
+            raise Exception("Matrices' lengths do not match! \n\n" + str(lengths(matrix)) + str(lengths(matrices[0])))
 
+    result = []
     for matrix in matrices:
-        if matrices.index(matrix) == 0:
+        if result == []:
+            result = matrix.copy()
             continue
 
-        for row in value:
-            rowMatrix = matrix[value.index(row)]
-            for cell in rowMatrix:
-                value[value.index(row)][rowMatrix.index(cell)] += cell
+        # 2d matrix
+        if isinstance(matrix[0], list):
+            for row in range(len(matrix)):
+                for col in range(len(matrix[0])):
+                    result[row][col] += matrix[row][col]
+        # 1d vector
+        else:
+            for index in range(len(matrix)):
+                result[index] += matrix[index]
 
-    return value
+    return result

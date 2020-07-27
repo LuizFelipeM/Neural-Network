@@ -1,5 +1,5 @@
 import unittest
-from src.matrix_utils import matrix_sum
+from src.matrix_utils import sum
 
 
 class TestMatrixUtils(unittest.TestCase):
@@ -7,11 +7,15 @@ class TestMatrixUtils(unittest.TestCase):
         m1 = [[1, 2, 3], [-1, 0, 4]]
         m2 = [[2, -5, 0], [-2, 0, 1]]
         result = [[3, -3, 3], [-3, 0, 5]]
+        self.assertEqual(sum(m1, m2), result)
 
-        self.assertEqual(matrix_sum(m1, m2), result)
+    def test_sum_vector(self):
+        m1 = [1, 2, 3]
+        m2 = [2, -5, 0]
+        result = [3, -3, 3]
+        self.assertEqual(sum(m1, m2), result)
 
     def test_sum_throw(self):
         m1 = [[1, 2, 3], [-1, 0]]
         m2 = [[2, -5, 0], [-2, 0, 1]]
-
-        self.assertRaises(Exception, lambda: matrix_sum(m1, m2))
+        self.assertRaises(Exception, lambda: sum(m1, m2))
