@@ -40,22 +40,24 @@ def sum(*matrices):
 
     return result
 
-def mult(matrice1, matrice2):
-    dims1 = lengths(matrice1)
-    dims2 = lengths(matrice2)
+def mult(matrix1, matrix2):
+    dims1 = lengths(matrix1)
+    dims2 = lengths(matrix2)
 
     if dims1[1] != dims2[0]:
         raise Exception("Matrices' row and column does not match! \n\n"
-                        + str(lengths(matrice1))
-                        + str(lengths(matrice2))
+                        + str(lengths(matrix1))
+                        + str(lengths(matrix2))
                         )
 
-    result = initialize()[[0]*dims2[1]]*dims1[0]
+    result = initialize(dims1[0], dims2[1])
 
-    for row in range(len(matrice1)):
-        for row2 in range(len(matrice2)):
-            for cell in range(len(matrice2[row2])):
-                result[row][cell] += matrice1[row][cell] * matrice2[cell][row2]
+    for row in range(len(matrix1)):
+        for row2 in range(len(matrix2)):
+            for col2 in range(len(matrix2[row2])):
+                val1 = matrix1[row][row2]
+                val2 = matrix2[row2][col2]
+                result[row][col2] += val1 * val2
 
     return result
 
