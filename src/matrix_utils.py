@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 def initialize(dimY, dimX, defaultValue = 0):
     if dimY == 1 and dimX == 1:
         return defaultValue
@@ -28,7 +30,7 @@ def sum(*matrices):
     result = []
     for matrix in matrices:
         if result == []:
-            result = matrix.copy()
+            result = deepcopy(matrix)
             continue
 
         # 2d matrix
@@ -64,29 +66,17 @@ def mult(matrix1, matrix2):
 
     return result
 
-    # [1, 2]    [-1, 3]
-    # [3, 4] x  [ 4, 2]
-
-
-x = mult([[2, 3], [0, 1], [-1, 4]], [[1, 2, 3], [-2, 0, 4]])
 
 def transpose(matrix):
     dims = lengths(matrix)
-    if dims[0] != dims[1]:
-        raise Exception("Cant transpose a matrix which is not squared -->")
-        print(matrix)
-
     isVector = not isinstance(matrix[0], list)
 
     result = []
     if isVector:
         result.append(matrix)
     else:
-        result = matrix[:][:]
+        result = initialize(dims[0], dims[1])
         for row in range(len(matrix)):
             for col in range(len(matrix[0])):
-                if (row != col):
-                    result[row][col] = matrix[col][row]
-                    # result[row][col] = 3
+                result[row][col] = matrix[col][row]
     return result
-
