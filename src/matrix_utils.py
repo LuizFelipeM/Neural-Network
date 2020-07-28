@@ -1,9 +1,12 @@
-def initialize(dimY, dimX):
+def initialize(dimY, dimX, defaultValue = 0):
+    if dimY == 1 and dimX == 1:
+        return defaultValue
+
     result = []
     for y in range(dimY):
         row = []
         for x in range(dimX):
-            row.append(0)
+            row.append(defaultValue)
         result.append(row)
     return result
 
@@ -67,4 +70,23 @@ def mult(matrix1, matrix2):
 
 x = mult([[2, 3], [0, 1], [-1, 4]], [[1, 2, 3], [-2, 0, 4]])
 
+def transpose(matrix):
+    dims = lengths(matrix)
+    if dims[0] != dims[1]:
+        raise Exception("Cant transpose a matrix which is not squared -->")
+        print(matrix)
+
+    isVector = not isinstance(matrix[0], list)
+
+    result = []
+    if isVector:
+        result.append(matrix)
+    else:
+        result = matrix[:][:]
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                if (row != col):
+                    result[row][col] = matrix[col][row]
+                    # result[row][col] = 3
+    return result
 
