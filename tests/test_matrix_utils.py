@@ -8,6 +8,10 @@ class TestMatrixUtils(unittest.TestCase):
         result = (1,3)
         self.assertEqual(mu.lengths(m), result)
 
+    def test_lengths_escalar(self):
+        n = 69
+        self.assertRaises(Exception, lambda: mu.lengths(n))
+
     def test_sum(self):
         m1 = [[1, 2, 3], [-1, 0, 4]]
         m2 = [[2, -5, 0], [-2, 0, 1]]
@@ -20,15 +24,33 @@ class TestMatrixUtils(unittest.TestCase):
         result = [3, -3, 3]
         self.assertEqual(mu.sum(m1, m2), result)
 
+    def test_sum_column_vector(self):
+        m1 = [[1, 2, 3]]
+        m2 = [[3, 2, 1]]
+        result = [[4, 4, 4]]
+        self.assertEqual(mu.sum(m1, m2), result)
+
     def test_sum_throw(self):
         m1 = [[1, 2, 3], [-1, 0]]
         m2 = [[2, -5, 0], [-2, 0, 1]]
         self.assertRaises(Exception, lambda: mu.sum(m1, m2))
 
-    def test_mult(self):
+    def test_mult_matrices(self):
         m1 = [[2, 3], [4, 6]]
         m2 = [[1, 3, 0], [2, 1, 1]]
         result = [[8, 9, 3], [16, 18, 6]]
+        self.assertEqual(mu.mult(m1, m2), result)
+
+    def test_mult_vector_result_escalar(self):
+        m1 = [[1, 2, 3]]
+        m2 = [1, 2, 3]
+        result = 14
+        self.assertEqual(mu.mult(m1, m2), result)
+
+    def test_mult_vector_result_square_matrix(self):
+        m1 = [1, 2, 3]
+        m2 = [[1, 2, 3]]
+        result = [[1,2,3],[2,4,6],[3,6,9]]
         self.assertEqual(mu.mult(m1, m2), result)
 
     def test_mult_throw(self):

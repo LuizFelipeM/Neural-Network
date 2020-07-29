@@ -6,7 +6,6 @@ def initialize(y_dim, x_dim, default_val = 0):
         return default_val
 
     result = []
-
     for y in range(y_dim):
         row = []
         for x in range(x_dim):
@@ -59,13 +58,28 @@ def mult(matrix1: list, matrix2: list):
                         + str(lengths(matrix2))
                         )
 
-    result = initialize(dims1[0], dims2[1])
-    for row in range(len(matrix1)):
-        for row2 in range(len(matrix2)):
-            for col2 in range(len(matrix2[row2])):
-                val1 = matrix1[row][row2]
-                val2 = matrix2[row2][col2]
-                result[row][col2] += val1 * val2
+    # vector
+        # escalar
+    if dims1[1] == 1 and dims2[0] == 1:
+        result = initialize(dims1[0], dims2[1])
+        for row in range(len(result)):
+            for col in range(len(result[0])):
+                result[row][col] = matrix1[row] * matrix2[0][col]
+        # square matrix
+    elif dims1[0] == 1 and dims2[1] == 1:
+        result = 0
+        for index in range(len(matrix2)):
+            result += matrix1[0][index] * matrix2[index]
+        return result
+    # matrix
+    else:
+        result = initialize(dims1[0], dims2[1])
+        for row in range(len(matrix1)):
+            for row2 in range(len(matrix2)):
+                for col2 in range(len(matrix2[row2])):
+                    val1 = matrix1[row][row2]
+                    val2 = matrix2[row2][col2]
+                    result[row][col2] += val1 * val2
 
     return result
 
@@ -113,8 +127,7 @@ def transpose(matrix: list) -> list:
     if dims[1] == 1:
         result.append(matrix)
     elif dims[0] == 1:
-        return matrix[0]
-
+        return deepcopy(matrix[0])
     # matrix
     else:
         result = initialize(dims[0], dims[1])
