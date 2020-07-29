@@ -56,7 +56,6 @@ def mult(matrix1, matrix2):
                         )
 
     result = initialize(dims1[0], dims2[1])
-
     for row in range(len(matrix1)):
         for row2 in range(len(matrix2)):
             for col2 in range(len(matrix2[row2])):
@@ -69,11 +68,13 @@ def mult(matrix1, matrix2):
 
 def transpose(matrix):
     dims = lengths(matrix)
-    isVector = not isinstance(matrix[0], list)
-
     result = []
-    if isVector:
+    # vector
+    if dims[1] == 1:
         result.append(matrix)
+    elif dims[0] == 1:
+        return matrix[0]
+    # matrix
     else:
         result = initialize(dims[0], dims[1])
         for row in range(len(matrix)):
