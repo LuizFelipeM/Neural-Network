@@ -1,5 +1,8 @@
-def soma(x: float, y: float) -> float:
-    return x + y
+import matrix_utils as mu
 
 if __name__ == "__main__":
-    print(soma(10, 10))
+    vec1 = [1,2,3]
+    vec2 = [[1,2,3]]
+    multi = mu.mult(vec1, vec2)
+    print(multi)
+    print("hola")

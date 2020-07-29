@@ -1,9 +1,14 @@
-def initialize(dimY, dimX):
+from copy import deepcopy
+
+def initialize(dimY, dimX, defaultValue = 0):
+    if dimY == 1 and dimX == 1:
+        return defaultValue
+
     result = []
     for y in range(dimY):
         row = []
         for x in range(dimX):
-            row.append(0)
+            row.append(defaultValue)
         result.append(row)
     return result
 
@@ -25,7 +30,7 @@ def sum(*matrices):
     result = []
     for matrix in matrices:
         if result == []:
-            result = matrix.copy()
+            result = deepcopy(matrix)
             continue
 
         # 2d matrix
@@ -51,7 +56,6 @@ def mult(matrix1, matrix2):
                         )
 
     result = initialize(dims1[0], dims2[1])
-
     for row in range(len(matrix1)):
         for row2 in range(len(matrix2)):
             for col2 in range(len(matrix2[row2])):
@@ -61,10 +65,19 @@ def mult(matrix1, matrix2):
 
     return result
 
-    # [1, 2]    [-1, 3]
-    # [3, 4] x  [ 4, 2]
 
-
-x = mult([[2, 3], [0, 1], [-1, 4]], [[1, 2, 3], [-2, 0, 4]])
-
-
+def transpose(matrix):
+    dims = lengths(matrix)
+    result = []
+    # vector
+    if dims[1] == 1:
+        result.append(matrix)
+    elif dims[0] == 1:
+        return matrix[0]
+    # matrix
+    else:
+        result = initialize(dims[0], dims[1])
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                result[row][col] = matrix[col][row]
+    return result
