@@ -1,8 +1,10 @@
-def initialize(dimY, dimX):
+from copy import deepcopy
+
+def initialize(yDim, xDim):
     result = []
-    for y in range(dimY):
+    for y in range(yDim):
         row = []
-        for x in range(dimX):
+        for x in range(xDim):
             row.append(0)
         result.append(row)
     return result
@@ -40,7 +42,8 @@ def sum(*matrices):
 
     return result
 
-def mult(matrix1, matrix2):
+
+def mult(matrix1: list, matrix2: list):
     dims1 = lengths(matrix1)
     dims2 = lengths(matrix2)
 
@@ -61,10 +64,30 @@ def mult(matrix1, matrix2):
 
     return result
 
-    # [1, 2]    [-1, 3]
-    # [3, 4] x  [ 4, 2]
+
+def det(matrix: list, row=0, col=0) -> float:
+    result = 0
+    dims = lengths(matrix)
+
+    if dims[0] != dims[1]:
+        raise Exception("Matrix must have the same number of columns and rows")
+
+    if dims[0] == 2 and dims[1] == 2:
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    else:
+        mat = deepcopy(matrix)
+        selRow = mat.pop(row)
+
+        for x in range(len(mat)):
+            mat[x].remove(mat[x][col])
+
+        for x in range(len(selRow)):
+            # el = mat[row][x]
+            val = det(mat)
+            result += -1**(row + x) * val
+
+    return result
 
 
-x = mult([[2, 3], [0, 1], [-1, 4]], [[1, 2, 3], [-2, 0, 4]])
-
-
+def cofactor(el: float, i: float, j: float) -> float:
+    return -1**(i + j) * el
