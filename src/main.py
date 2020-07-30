@@ -1,5 +1,8 @@
-from src.matrix_utils import det
+import matrix_utils as mu
 
 if __name__ == "__main__":
-    m = [[1, 3, 0], [2, 5, 1], [2, 1, 3]]
-    det(m)
+    vec1 = [1,2,3]
+    vec2 = [[1,2,3]]
+    multi = mu.mult(vec1, vec2)
+    print(multi)
+    print("hola")

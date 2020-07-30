@@ -1,12 +1,16 @@
 from copy import deepcopy
 
 
-def initialize(y_dim, x_dim):
+def initialize(y_dim, x_dim, default_val = 0):
+    if y_dim == 1 and x_dim == 1:
+        return default_val
+
     result = []
+
     for y in range(y_dim):
         row = []
         for x in range(x_dim):
-            row.append(0)
+            row.append(default_val)
         result.append(row)
     return result
 
@@ -29,7 +33,7 @@ def sum(*matrices):
     result = []
     for matrix in matrices:
         if not result:
-            result = matrix.copy()
+            result = deepcopy(matrix)
             continue
 
         # 2d matrix
@@ -56,7 +60,6 @@ def mult(matrix1: list, matrix2: list):
                         )
 
     result = initialize(dims1[0], dims2[1])
-
     for row in range(len(matrix1)):
         for row2 in range(len(matrix2)):
             for col2 in range(len(matrix2[row2])):
@@ -96,3 +99,20 @@ def det(matrix: list, row=0, col=0) -> float:
 
 def cof(mnr: float, i: float, j: float) -> float:
     return (- 1)**(i + j) * mnr
+
+
+def transpose(matrix):
+    dims = lengths(matrix)
+    result = []
+    # vector
+    if dims[1] == 1:
+        result.append(matrix)
+    elif dims[0] == 1:
+        return matrix[0]
+    # matrix
+    else:
+        result = initialize(dims[0], dims[1])
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                result[row][col] = matrix[col][row]
+    return result

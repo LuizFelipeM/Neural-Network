@@ -3,6 +3,11 @@ import src.matrix_utils as mu
 
 
 class TestMatrixUtils(unittest.TestCase):
+    def test_lengths(self):
+        m = [[1,2,3]]
+        result = (1,3)
+        self.assertEqual(mu.lengths(m), result)
+
     def test_sum(self):
         m1 = [[1, 2, 3], [-1, 0, 4]]
         m2 = [[2, -5, 0], [-2, 0, 1]]
@@ -45,3 +50,18 @@ class TestMatrixUtils(unittest.TestCase):
         m = [[2, 5, -3, -2], [-2, -3, 2, -5], [1, 3, -2, 0], [-1, 6, 4, 0]]
         result = -103
         self.assertEqual(mu.det(m), result)
+
+    def test_transpose_vector(self):
+        m = [-1, 3, 4]
+        result = [[-1, 3, 4]]
+        self.assertEqual(mu.transpose(m), result)
+
+    def test_transpose_column_vector(self):
+        m = [[-1, 3, 4]]
+        result = [-1, 3, 4]
+        self.assertEqual(mu.transpose(m), result)
+
+    def test_transpose_matrix(self):
+        m = [[-1, 3, 4], [2, 0, 1], [1, 0, 5]]
+        result = [[-1, 2, 1], [3, 0, 0], [4, 1, 5]]
+        self.assertEqual(mu.transpose(m), result)
