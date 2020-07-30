@@ -1,5 +1,5 @@
-def soma(x: float, y: float) -> float:
-    return x + y
+from src.matrix_utils import det
 
 if __name__ == "__main__":
-    print(soma(10, 10))
+    m = [[1, 3, 0], [2, 5, 1], [2, 1, 3]]
+    det(m)

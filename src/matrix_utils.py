@@ -1,18 +1,20 @@
 from copy import deepcopy
 
-def initialize(yDim, xDim):
+
+def initialize(y_dim, x_dim):
     result = []
-    for y in range(yDim):
+    for y in range(y_dim):
         row = []
-        for x in range(xDim):
+        for x in range(x_dim):
             row.append(0)
         result.append(row)
     return result
 
+
 def lengths(matrix):
-    xDim = len(matrix)
-    yDim = len(matrix[0]) if isinstance(matrix[0], list) else 1
-    return (xDim, yDim)
+    x_dim = len(matrix)
+    y_dim = len(matrix[0]) if isinstance(matrix[0], list) else 1
+    return (x_dim, y_dim)
 
 
 def sum(*matrices):
@@ -26,7 +28,7 @@ def sum(*matrices):
 
     result = []
     for matrix in matrices:
-        if result == []:
+        if not result:
             result = matrix.copy()
             continue
 
@@ -66,28 +68,31 @@ def mult(matrix1: list, matrix2: list):
 
 
 def det(matrix: list, row=0, col=0) -> float:
-    result = 0
+    result: float = 0
+    sel_row: list
+    cofacs: list = []
     dims = lengths(matrix)
 
     if dims[0] != dims[1]:
         raise Exception("Matrix must have the same number of columns and rows")
 
     if dims[0] == 2 and dims[1] == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+        result = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
     else:
-        mat = deepcopy(matrix)
-        selRow = mat.pop(row)
+        for detCol in range(len(matrix[row])):
+            mat = deepcopy(matrix)
+            sel_row = mat.pop(row)
 
-        for x in range(len(mat)):
-            mat[x].remove(mat[x][col])
+            for rmRow in range(len(mat)):
+                mat[rmRow].remove(mat[rmRow][detCol])
 
-        for x in range(len(selRow)):
-            # el = mat[row][x]
-            val = det(mat)
-            result += -1**(row + x) * val
+            cofacs.append(cof(det(mat), detCol + 1, row + 1))
+
+        for el in sel_row:
+            result += el * cofacs[sel_row.index(el)]
 
     return result
 
 
-def cofactor(el: float, i: float, j: float) -> float:
-    return -1**(i + j) * el
+def cof(mnr: float, i: float, j: float) -> float:
+    return (- 1)**(i + j) * mnr
