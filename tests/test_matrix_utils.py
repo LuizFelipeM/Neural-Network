@@ -3,6 +3,18 @@ import src.matrix_utils as mu
 
 
 class TestMatrixUtils(unittest.TestCase):
+    def test_initialize_matrix(self):
+        result = [[1,1],[1,1],[1,1]]
+        self.assertEqual(mu.initialize(3,2,1), result)
+
+    def test_initialize_vector(self):
+        result = [0,0,0,0,0]
+        self.assertEqual(mu.initialize(5,1,0), result)
+
+    def test_initialize_column_vector(self):
+        result = [[0,0,0,0,0]]
+        self.assertEqual(mu.initialize(1,5,0), result)
+
     def test_lengths(self):
         m = [[1,2,3]]
         result = (1,3)

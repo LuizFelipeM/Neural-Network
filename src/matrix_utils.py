@@ -1,26 +1,33 @@
 from copy import deepcopy
 
 
-def initialize(y_dim, x_dim, default_val = 0):
-    if y_dim == 1 and x_dim == 1:
-        return default_val
-
+def initialize(rows: int, cols: int, default_val = 0) -> list:
     result = []
-    for y in range(y_dim):
-        row = []
-        for x in range(x_dim):
-            row.append(default_val)
-        result.append(row)
+    if rows == 1 and cols == 1:
+        return [default_val]
+    elif rows != 1 and cols == 1:
+        for x in range(rows):
+            result.append(default_val)
+    elif rows == 1 and cols != 1:
+        for y in range(cols):
+            result.append(default_val)
+        result = [result]
+    else:
+        for y in range(rows):
+            row = []
+            for x in range(cols):
+                row.append(default_val)
+            result.append(row)
     return result
 
 
-def lengths(matrix):
+def lengths(matrix: list) -> tuple:
     x_dim = len(matrix)
     y_dim = len(matrix[0]) if isinstance(matrix[0], list) else 1
     return (x_dim, y_dim)
 
 
-def sum(*matrices):
+def sum(*matrices: list) -> list:
     dims = lengths(matrices[0])
     for matrix in matrices:
         if dims[0] != lengths(matrix)[0] or dims[1] != lengths(matrix)[1]:
@@ -48,7 +55,7 @@ def sum(*matrices):
     return result
 
 
-def mult(matrix1: list, matrix2: list):
+def mult(matrix1: list, matrix2: list) -> list:
     dims1 = lengths(matrix1)
     dims2 = lengths(matrix2)
 
@@ -100,7 +107,7 @@ def cofactor_adj(matrix: list, row=0, col=0) -> float:
 
 def determinant(matrix: list, row=0) -> float:
     result: float = 0
-    cofacs: list = []
+    cofacs = []
     dims = lengths(matrix)
 
     if dims[0] != dims[1]:
@@ -122,7 +129,6 @@ def determinant(matrix: list, row=0) -> float:
 def transpose(matrix: list) -> list:
     dims = lengths(matrix)
     result = []
-
     # vector
     if dims[1] == 1:
         result.append(matrix)
