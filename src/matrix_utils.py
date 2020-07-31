@@ -1,21 +1,24 @@
 from copy import deepcopy
 
-def initialize(dimY, dimX, defaultValue = 0):
-    if dimY == 1 and dimX == 1:
-        return defaultValue
+
+def initialize(y_dim, x_dim, default_val = 0):
+    if y_dim == 1 and x_dim == 1:
+        return default_val
 
     result = []
-    for y in range(dimY):
+
+    for y in range(y_dim):
         row = []
-        for x in range(dimX):
-            row.append(defaultValue)
+        for x in range(x_dim):
+            row.append(default_val)
         result.append(row)
     return result
 
+
 def lengths(matrix):
-    xDim = len(matrix)
-    yDim = len(matrix[0]) if isinstance(matrix[0], list) else 1
-    return (xDim, yDim)
+    x_dim = len(matrix)
+    y_dim = len(matrix[0]) if isinstance(matrix[0], list) else 1
+    return (x_dim, y_dim)
 
 
 def sum(*matrices):
@@ -29,7 +32,7 @@ def sum(*matrices):
 
     result = []
     for matrix in matrices:
-        if result == []:
+        if not result:
             result = deepcopy(matrix)
             continue
 
@@ -45,7 +48,8 @@ def sum(*matrices):
 
     return result
 
-def mult(matrix1, matrix2):
+
+def mult(matrix1: list, matrix2: list):
     dims1 = lengths(matrix1)
     dims2 = lengths(matrix2)
 
@@ -66,14 +70,51 @@ def mult(matrix1, matrix2):
     return result
 
 
+def determinant(matrix: list, row=0) -> float:
+    result: float = 0
+    cofacs: list = []
+    dims = lengths(matrix)
+
+    if dims[0] != dims[1]:
+        raise Exception("Matrix must have the same number of columns and rows")
+
+    if dims[0] == 1 and dims[1] == 1:
+        result = matrix[0][0]
+    else:
+        for det_col in range(len(matrix[row])):
+            cofacs.append(cofactor_adj(matrix, row, det_col))
+
+        for i in range(len(matrix[row])):
+            el = matrix[row][i]
+            result += el * cofacs[i]
+
+    return result
+
+
+def cofactor_adj(matrix: list, row=0, col=0) -> float:
+    mat = deepcopy(matrix)
+    mat.remove(mat[row])
+
+    for rm_row in range(len(mat)):
+        mat[rm_row].remove(mat[rm_row][col])
+
+    return cofactor(determinant(mat), col, row)
+
+
+def cofactor(mnr: float, col: float, row: float) -> float:
+    return (- 1)**((col + 1) + (row + 1)) * mnr
+
+
 def transpose(matrix):
     dims = lengths(matrix)
     result = []
+
     # vector
     if dims[1] == 1:
         result.append(matrix)
     elif dims[0] == 1:
         return matrix[0]
+
     # matrix
     else:
         result = initialize(dims[0], dims[1])
