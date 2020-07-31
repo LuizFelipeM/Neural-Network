@@ -70,9 +70,8 @@ def mult(matrix1: list, matrix2: list):
     return result
 
 
-def det(matrix: list, row=0, col=0) -> float:
+def determinant(matrix: list, row=0) -> float:
     result: float = 0
-    sel_row: list
     cofacs: list = []
     dims = lengths(matrix)
 
@@ -82,33 +81,40 @@ def det(matrix: list, row=0, col=0) -> float:
     if dims[0] == 1 and dims[1] == 1:
         result = matrix[0][0]
     else:
-        for detCol in range(len(matrix[row])):
-            mat = deepcopy(matrix)
-            sel_row = mat.pop(row)
+        for det_col in range(len(matrix[row])):
+            cofacs.append(cofactor_adj(matrix, row, det_col))
 
-            for rm_row in range(len(mat)):
-                mat[rm_row].remove(mat[rm_row][detCol])
-
-            cofacs.append(cof(det(mat), detCol + 1, row + 1))
-
-        for el in sel_row:
-            result += el * cofacs[sel_row.index(el)]
+        for i in range(len(matrix[row])):
+            el = matrix[row][i]
+            result += el * cofacs[i]
 
     return result
 
 
-def cof(mnr: float, col: float, row: float) -> float:
-    return (- 1)**(col + row) * mnr
+def cofactor_adj(matrix: list, row=0, col=0) -> float:
+    mat = deepcopy(matrix)
+    mat.remove(mat[row])
+
+    for rm_row in range(len(mat)):
+        mat[rm_row].remove(mat[rm_row][col])
+
+    return cofactor(determinant(mat), col, row)
+
+
+def cofactor(mnr: float, col: float, row: float) -> float:
+    return (- 1)**((col + 1) + (row + 1)) * mnr
 
 
 def transpose(matrix):
     dims = lengths(matrix)
     result = []
+
     # vector
     if dims[1] == 1:
         result.append(matrix)
     elif dims[0] == 1:
         return matrix[0]
+
     # matrix
     else:
         result = initialize(dims[0], dims[1])
