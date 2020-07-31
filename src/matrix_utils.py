@@ -79,15 +79,15 @@ def det(matrix: list, row=0, col=0) -> float:
     if dims[0] != dims[1]:
         raise Exception("Matrix must have the same number of columns and rows")
 
-    if dims[0] == 2 and dims[1] == 2:
-        result = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    if dims[0] == 1 and dims[1] == 1:
+        result = matrix[0][0]
     else:
         for detCol in range(len(matrix[row])):
             mat = deepcopy(matrix)
             sel_row = mat.pop(row)
 
-            for rmRow in range(len(mat)):
-                mat[rmRow].remove(mat[rmRow][detCol])
+            for rm_row in range(len(mat)):
+                mat[rm_row].remove(mat[rm_row][detCol])
 
             cofacs.append(cof(det(mat), detCol + 1, row + 1))
 
