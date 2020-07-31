@@ -97,8 +97,8 @@ def det(matrix: list, row=0, col=0) -> float:
     return result
 
 
-def cof(mnr: float, i: float, j: float) -> float:
-    return (- 1)**(i + j) * mnr
+def cof(mnr: float, col: float, row: float) -> float:
+    return (- 1)**(col + row) * mnr
 
 
 def transpose(matrix):
