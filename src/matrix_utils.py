@@ -70,6 +70,20 @@ def mult(matrix1: list, matrix2: list):
     return result
 
 
+def cofactor(mnr: float, col: float, row: float) -> float:
+    return (- 1)**((col + 1) + (row + 1)) * mnr
+
+
+def cofactor_adj(matrix: list, row=0, col=0) -> float:
+    mat = deepcopy(matrix)
+    mat.remove(mat[row])
+
+    for rm_row in range(len(mat)):
+        mat[rm_row].remove(mat[rm_row][col])
+
+    return cofactor(determinant(mat), col, row)
+
+
 def determinant(matrix: list, row=0) -> float:
     result: float = 0
     cofacs: list = []
@@ -91,21 +105,7 @@ def determinant(matrix: list, row=0) -> float:
     return result
 
 
-def cofactor_adj(matrix: list, row=0, col=0) -> float:
-    mat = deepcopy(matrix)
-    mat.remove(mat[row])
-
-    for rm_row in range(len(mat)):
-        mat[rm_row].remove(mat[rm_row][col])
-
-    return cofactor(determinant(mat), col, row)
-
-
-def cofactor(mnr: float, col: float, row: float) -> float:
-    return (- 1)**((col + 1) + (row + 1)) * mnr
-
-
-def transpose(matrix):
+def transpose(matrix: list) -> list:
     dims = lengths(matrix)
     result = []
 
@@ -121,4 +121,22 @@ def transpose(matrix):
         for row in range(len(matrix)):
             for col in range(len(matrix[0])):
                 result[row][col] = matrix[col][row]
+    return result
+
+
+def adjoint(matrix: list) -> list:
+    dims = lengths(matrix)
+
+    if dims[0] != dims[1]:
+        raise Exception("Matrix must have the same number of columns and rows")
+
+    result = initialize(dims[1], dims[0])
+
+    for row in range(len(matrix)):
+        for col in range(len(matrix[row])):
+            cof = cofactor_adj(matrix, row, col)
+            result[row][col] = cof
+
+    result = transpose(result)
+
     return result
