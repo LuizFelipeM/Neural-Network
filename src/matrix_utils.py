@@ -27,6 +27,30 @@ def lengths(matrix: list) -> tuple:
     return (x_dim, y_dim)
 
 
+def is_square(matrix: list) -> bool:
+    dim = lengths(matrix)
+    return True if dim[0] == dim[1] and dim[0] != 1 else False
+
+
+def is_vector(matrix: list) -> bool:
+    dim = lengths(matrix)
+    return True if dim[0] != 1 and dim[1] == 1 else False
+
+
+def is_line_vector(matrix: list) -> bool:
+    dim = lengths(matrix)
+    return True if dim[0] == 1 and dim[1] != 1 else False
+
+
+def is_scalar(matrix: list) -> bool:
+    dim = lengths(matrix)
+    return True if dim[0] == 1 and dim[1] == 1 else False
+
+
+def is_2d(matrix: list) -> bool:
+    return isinstance(matrix[0], list)
+
+
 def sum(*matrices: list) -> list:
     dims = lengths(matrices[0])
     for matrix in matrices:
@@ -43,7 +67,7 @@ def sum(*matrices: list) -> list:
             continue
 
         # 2d matrix
-        if isinstance(matrix[0], list):
+        if is_2d(matrix):
             for row in range(len(matrix)):
                 for col in range(len(matrix[0])):
                     result[row][col] += matrix[row][col]
@@ -55,39 +79,41 @@ def sum(*matrices: list) -> list:
     return result
 
 
-def mult(matrix1: list, matrix2: list) -> list:
-    dims1 = lengths(matrix1)
-    dims2 = lengths(matrix2)
+def mult_core_vectors_to_scalar(matrix1: list, matrix2: list, result: list) -> list:
+    for index in range(len(matrix2)):
+        result[0] += matrix1[0][index] * matrix2[index]
+    return result
 
-    if dims1[1] != dims2[0]:
-        raise Exception("Matrices' row and column does not match! \n\n"
-                        + str(lengths(matrix1))
-                        + str(lengths(matrix2))
-                        )
 
-    # vector
-        # escalar
-    if dims1[1] == 1 and dims2[0] == 1:
-        result = initialize(dims1[0], dims2[1])
-        for row in range(len(result)):
-            for col in range(len(result[0])):
-                result[row][col] = matrix1[row] * matrix2[0][col]
-        # square matrix
-    elif dims1[0] == 1 and dims2[1] == 1:
-        result = 0
-        for index in range(len(matrix2)):
-            result += matrix1[0][index] * matrix2[index]
-        return result
-    # matrix
+def mult_core_vectors_to_square_matrix(matrix1: list, matrix2: list, result: list) -> list:
+    for row in range(len(result)):
+        for col in range(len(result[0])):
+            result[row][col] = matrix1[row] * matrix2[0][col]
+    return result
+
+
+def mult_core_matrices(matrix1: list, matrix2: list, result: list) -> list:
+    for row in range(len(matrix1)):
+        for row2 in range(len(matrix2)):
+            for col2 in range(len(matrix2[row2])):
+                val1 = matrix1[row][row2]
+                val2 = matrix2[row2][col2]
+                result[row][col2] += val1 * val2
+    return result
+
+
+def mult_core_scalar(matrix1: list, matrix2: list) -> list:
+    scalar = matrix1[0]
+    result = deepcopy(matrix2)
+    # 2d matrix
+    if is_2d(matrix2):
+        for row in range(len(matrix2)):
+            for col in range(len(matrix2[0])):
+                result[row][col] = scalar * matrix2[row][col]
+    # 1d vector
     else:
-        result = initialize(dims1[0], dims2[1])
-        for row in range(len(matrix1)):
-            for row2 in range(len(matrix2)):
-                for col2 in range(len(matrix2[row2])):
-                    val1 = matrix1[row][row2]
-                    val2 = matrix2[row2][col2]
-                    result[row][col2] += val1 * val2
-
+        for index in range(len(matrix2)):
+            result[index] = scalar * matrix2[index]
     return result
 
 
@@ -105,15 +131,38 @@ def cofactor_adj(matrix: list, row=0, col=0) -> float:
     return cofactor(determinant(mat), col, row)
 
 
-def determinant(matrix: list, row=0) -> float:
+def mult(matrix1: list, matrix2: list) -> list:
+    dims1 = lengths(matrix1)
+    dims2 = lengths(matrix2)
+
+    if dims1[1] != dims2[0] and not is_scalar(matrix1):
+        raise Exception("Matrices' row and column does not match! \n\n"
+                        + str(lengths(matrix1))
+                        + str(lengths(matrix2))
+                        )
+
+    result = initialize(dims1[0], dims2[1])
+    # vector
+    if is_vector(matrix1) and is_line_vector(matrix2):
+        return mult_core_vectors_to_square_matrix(matrix1, matrix2, result)
+    elif is_line_vector(matrix1) and is_vector(matrix2):
+        return mult_core_vectors_to_scalar(matrix1, matrix2, result)
+    # scalar
+    elif is_scalar(matrix1):
+        return mult_core_scalar(matrix1, matrix2)
+    # matrix
+    else:
+        return mult_core_matrices(matrix1, matrix2, result)
+
+
+def determinant(matrix: list, row= 0) -> float:
     result: float = 0
     cofacs = []
-    dims = lengths(matrix)
 
-    if dims[0] != dims[1]:
+    if not is_square(matrix) and not is_scalar(matrix):
         raise Exception("Matrix must have the same number of columns and rows")
 
-    if dims[0] == 1 and dims[1] == 1:
+    if is_2d(matrix) and is_scalar(matrix[0]):
         result = matrix[0][0]
     else:
         for det_col in range(len(matrix[row])):
@@ -130,9 +179,9 @@ def transpose(matrix: list) -> list:
     dims = lengths(matrix)
     result = []
     # vector
-    if dims[1] == 1:
+    if is_vector(matrix):
         result.append(matrix)
-    elif dims[0] == 1:
+    elif is_line_vector(matrix):
         return deepcopy(matrix[0])
     # matrix
     else:
