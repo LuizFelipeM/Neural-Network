@@ -15,6 +15,10 @@ class TestMatrixUtils(unittest.TestCase):
         result = [[0, 0, 0, 0, 0]]
         self.assertEqual(mu.initialize(1,5,0), result)
 
+    def test_validate_square_matrix(self):
+        m = [1,2]
+        self.assertRaises(Exception, lambda: mu.validate_square_matrix(m))
+
     def test_lengths(self):
         m = [[1, 2, 3]]
         result = (1, 3)

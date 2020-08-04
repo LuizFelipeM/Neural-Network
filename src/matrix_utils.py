@@ -31,6 +31,10 @@ def is_square(matrix: list) -> bool:
     dim = lengths(matrix)
     return True if dim[0] == dim[1] and dim[0] != 1 else False
 
+def validate_square_matrix(matrix: list):
+    if not is_square(matrix) and not is_scalar(matrix):
+        raise Exception("Matrix must have the same number of columns and rows")
+
 
 def is_vector(matrix: list) -> bool:
     dim = lengths(matrix)
@@ -156,11 +160,9 @@ def mult(matrix1: list, matrix2: list) -> list:
 
 
 def determinant(matrix: list, row= 0) -> float:
+    validate_square_matrix(matrix)
     result: float = 0
     cofacs = []
-
-    if not is_square(matrix) and not is_scalar(matrix):
-        raise Exception("Matrix must have the same number of columns and rows")
 
     if is_2d(matrix) and is_scalar(matrix[0]):
         result = matrix[0][0]
@@ -193,11 +195,8 @@ def transpose(matrix: list) -> list:
 
 
 def adjoint(matrix: list) -> list:
+    validate_square_matrix(matrix)
     dims = lengths(matrix)
-
-    if dims[0] != dims[1]:
-        raise Exception("Matrix must have the same number of columns and rows")
-
     result = initialize(dims[1], dims[0])
 
     for row in range(len(matrix)):
@@ -206,5 +205,4 @@ def adjoint(matrix: list) -> list:
             result[row][col] = cof
 
     result = transpose(result)
-
     return result
