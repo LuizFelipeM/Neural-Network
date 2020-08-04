@@ -2,7 +2,7 @@ import unittest
 import src.matrix_utils as mu
 
 
-class TestSumMatrixUtils(unittest.TestCase):
+class TestSumMatrix(unittest.TestCase):
     def test_sum(self):
         m1 = [[1, 2, 3], [-1, 0, 4]]
         m2 = [[2, -5, 0], [-2, 0, 1]]
