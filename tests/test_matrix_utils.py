@@ -64,6 +64,10 @@ class TestMatrixUtils(unittest.TestCase):
         m = [[1, 2], [3, 4]]
         self.assertEqual(mu.is_square(m), True)
 
+    def test_not_is_square(self):
+        m = [1, 2]
+        self.assertEqual(mu.is_square(m), False)
+
     def test_sum(self):
         m1 = [[1, 2, 3], [-1, 0, 4]]
         m2 = [[2, -5, 0], [-2, 0, 1]]
