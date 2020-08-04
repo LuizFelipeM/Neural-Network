@@ -1,4 +1,5 @@
 from copy import deepcopy
+import src.matrix_validators as mv
 
 
 def initialize(y_dim, x_dim, default_val = 0):
@@ -15,19 +16,13 @@ def initialize(y_dim, x_dim, default_val = 0):
     return result
 
 
-def lengths(matrix):
-    x_dim = len(matrix)
-    y_dim = len(matrix[0]) if isinstance(matrix[0], list) else 1
-    return (x_dim, y_dim)
-
-
 def sum(*matrices):
-    dims = lengths(matrices[0])
+    dims = mv.lengths(matrices[0])
     for matrix in matrices:
-        if dims[0] != lengths(matrix)[0] or dims[1] != lengths(matrix)[1]:
+        if dims[0] != mv.lengths(matrix)[0] or dims[1] != mv.lengths(matrix)[1]:
             raise Exception("Matrices' lengths do not match! \n\n"
-                            + str(lengths(matrix))
-                            + str(lengths(matrices[0]))
+                            + str(mv.lengths(matrix))
+                            + str(mv.lengths(matrices[0]))
                             )
 
     result = []
@@ -50,13 +45,13 @@ def sum(*matrices):
 
 
 def mult(matrix1: list, matrix2: list):
-    dims1 = lengths(matrix1)
-    dims2 = lengths(matrix2)
+    dims1 = mv.lengths(matrix1)
+    dims2 = mv.lengths(matrix2)
 
     if dims1[1] != dims2[0]:
         raise Exception("Matrices' row and column does not match! \n\n"
-                        + str(lengths(matrix1))
-                        + str(lengths(matrix2))
+                        + str(mv.lengths(matrix1))
+                        + str(mv.lengths(matrix2))
                         )
 
     result = initialize(dims1[0], dims2[1])
@@ -87,7 +82,7 @@ def cofactor_adj(matrix: list, row=0, col=0) -> float:
 def determinant(matrix: list, row=0) -> float:
     result: float = 0
     cofacs: list = []
-    dims = lengths(matrix)
+    dims = mv.lengths(matrix)
 
     if dims[0] != dims[1]:
         raise Exception("Matrix must have the same number of columns and rows")
@@ -106,7 +101,7 @@ def determinant(matrix: list, row=0) -> float:
 
 
 def transpose(matrix: list) -> list:
-    dims = lengths(matrix)
+    dims = mv.lengths(matrix)
     result = []
 
     # vector
@@ -125,7 +120,7 @@ def transpose(matrix: list) -> list:
 
 
 def adjoint(matrix: list) -> list:
-    dims = lengths(matrix)
+    dims = mv.lengths(matrix)
 
     if dims[0] != dims[1]:
         raise Exception("Matrix must have the same number of columns and rows")
