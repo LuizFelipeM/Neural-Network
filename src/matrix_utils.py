@@ -1,4 +1,5 @@
 from copy import deepcopy
+import src.matrix_validators as mv
 
 
 def initialize(rows: int, cols: int, default_val = 0) -> list:
@@ -21,47 +22,13 @@ def initialize(rows: int, cols: int, default_val = 0) -> list:
     return result
 
 
-def lengths(matrix: list) -> tuple:
-    x_dim = len(matrix)
-    y_dim = len(matrix[0]) if isinstance(matrix[0], list) else 1
-    return (x_dim, y_dim)
-
-
-def is_square(matrix: list) -> bool:
-    dim = lengths(matrix)
-    return True if dim[0] == dim[1] and dim[0] != 1 else False
-
-def validate_square_matrix(matrix: list):
-    if not is_square(matrix) and not is_scalar(matrix):
-        raise Exception("Matrix must have the same number of columns and rows")
-
-
-def is_vector(matrix: list) -> bool:
-    dim = lengths(matrix)
-    return True if dim[0] != 1 and dim[1] == 1 else False
-
-
-def is_line_vector(matrix: list) -> bool:
-    dim = lengths(matrix)
-    return True if dim[0] == 1 and dim[1] != 1 else False
-
-
-def is_scalar(matrix: list) -> bool:
-    dim = lengths(matrix)
-    return True if dim[0] == 1 and dim[1] == 1 else False
-
-
-def is_2d(matrix: list) -> bool:
-    return isinstance(matrix[0], list)
-
-
 def sum(*matrices: list) -> list:
-    dims = lengths(matrices[0])
+    dims = mv.lengths(matrices[0])
     for matrix in matrices:
-        if dims[0] != lengths(matrix)[0] or dims[1] != lengths(matrix)[1]:
+        if dims[0] != mv.lengths(matrix)[0] or dims[1] != mv.lengths(matrix)[1]:
             raise Exception("Matrices' lengths do not match! \n\n"
-                            + str(lengths(matrix))
-                            + str(lengths(matrices[0]))
+                            + str(mv.lengths(matrix))
+                            + str(mv.lengths(matrices[0]))
                             )
 
     result = []
@@ -71,7 +38,7 @@ def sum(*matrices: list) -> list:
             continue
 
         # 2d matrix
-        if is_2d(matrix):
+        if mv.is_2d(matrix):
             for row in range(len(matrix)):
                 for col in range(len(matrix[0])):
                     result[row][col] += matrix[row][col]
@@ -110,7 +77,7 @@ def mult_core_scalar(matrix1: list, matrix2: list) -> list:
     scalar = matrix1[0]
     result = deepcopy(matrix2)
     # 2d matrix
-    if is_2d(matrix2):
+    if mv.is_2d(matrix2):
         for row in range(len(matrix2)):
             for col in range(len(matrix2[0])):
                 result[row][col] = scalar * matrix2[row][col]
@@ -136,23 +103,23 @@ def cofactor_adj(matrix: list, row=0, col=0) -> float:
 
 
 def mult(matrix1: list, matrix2: list) -> list:
-    dims1 = lengths(matrix1)
-    dims2 = lengths(matrix2)
+    dims1 = mv.lengths(matrix1)
+    dims2 = mv.lengths(matrix2)
 
-    if dims1[1] != dims2[0] and not is_scalar(matrix1):
+    if dims1[1] != dims2[0] and not mv.is_scalar(matrix1):
         raise Exception("Matrices' row and column does not match! \n\n"
-                        + str(lengths(matrix1))
-                        + str(lengths(matrix2))
+                        + str(mv.lengths(matrix1))
+                        + str(mv.lengths(matrix2))
                         )
 
     result = initialize(dims1[0], dims2[1])
     # vector
-    if is_vector(matrix1) and is_line_vector(matrix2):
+    if mv.is_vector(matrix1) and mv.is_line_vector(matrix2):
         return mult_core_vectors_to_square_matrix(matrix1, matrix2, result)
-    elif is_line_vector(matrix1) and is_vector(matrix2):
+    elif mv.is_line_vector(matrix1) and mv.is_vector(matrix2):
         return mult_core_vectors_to_scalar(matrix1, matrix2, result)
     # scalar
-    elif is_scalar(matrix1):
+    elif mv.is_scalar(matrix1):
         return mult_core_scalar(matrix1, matrix2)
     # matrix
     else:
@@ -160,11 +127,11 @@ def mult(matrix1: list, matrix2: list) -> list:
 
 
 def determinant(matrix: list, row= 0) -> float:
-    validate_square_matrix(matrix)
+    mv.validate_square_matrix(matrix)
     result: float = 0
     cofacs = []
 
-    if is_2d(matrix) and is_scalar(matrix[0]):
+    if mv.is_2d(matrix) and mv.is_scalar(matrix[0]):
         result = matrix[0][0]
     else:
         for det_col in range(len(matrix[row])):
@@ -178,12 +145,12 @@ def determinant(matrix: list, row= 0) -> float:
 
 
 def transpose(matrix: list) -> list:
-    dims = lengths(matrix)
+    dims = mv.lengths(matrix)
     result = []
     # vector
-    if is_vector(matrix):
+    if mv.is_vector(matrix):
         result.append(matrix)
-    elif is_line_vector(matrix):
+    elif mv.is_line_vector(matrix):
         return deepcopy(matrix[0])
     # matrix
     else:
@@ -195,8 +162,8 @@ def transpose(matrix: list) -> list:
 
 
 def adjoint(matrix: list) -> list:
-    validate_square_matrix(matrix)
-    dims = lengths(matrix)
+    mv.validate_square_matrix(matrix)
+    dims = mv.lengths(matrix)
     result = initialize(dims[1], dims[0])
 
     for row in range(len(matrix)):
