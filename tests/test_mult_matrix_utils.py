@@ -12,7 +12,5 @@ class TestMultMatrix(unittest.TestCase):
     def test_mult_2x2_2x3(self):
         m1 = [[2, 3], [4, 6]]
         m2 = [[1, 3, 0], [2, 1, 1]]
-
         result = [[8, 9, 3], [16, 18, 6]]
-
         self.assertEqual(mu.mult(m1, m2), result)
