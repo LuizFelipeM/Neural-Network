@@ -1,4 +1,4 @@
-import matrix_utils as mu
+import src.neural_network as nn
 
 if __name__ == "__main__":
-    print("123")
+    neural_net = nn.NeuralNetwork(2, 3, 2)

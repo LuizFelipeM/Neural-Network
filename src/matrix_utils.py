@@ -1,8 +1,9 @@
 from copy import deepcopy
+from random import randrange
 import src.matrix_validators as mv
 
 
-def initialize(rows: int, cols: int, default_val = 0) -> list:
+def initialize(rows: int, cols: int, default_val=0) -> list:
     result = []
     if rows == 1 and cols == 1:
         return [default_val]
@@ -18,6 +19,26 @@ def initialize(rows: int, cols: int, default_val = 0) -> list:
             row = []
             for x in range(cols):
                 row.append(default_val)
+            result.append(row)
+    return result
+
+
+def initialize(rows: int, cols: int, initialization_function=randrange, *initialization_args) -> list:
+    result = []
+    if rows == 1 and cols == 1:
+        return [initialization_function(*initialization_args)]
+    elif rows != 1 and cols == 1:
+        for x in range(rows):
+            result.append(initialization_function(*initialization_args))
+    elif rows == 1 and cols != 1:
+        for y in range(cols):
+            result.append(initialization_function(*initialization_args))
+        result = [result]
+    else:
+        for y in range(rows):
+            row = []
+            for x in range(cols):
+                row.append(initialization_function(*initialization_args))
             result.append(row)
     return result
 
