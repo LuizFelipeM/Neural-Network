@@ -1,16 +1,6 @@
-import src.matrix_utils as mu
-from src.activation_enum import ActivationEnum
+import src.utils.matrix_utils as mu
 from random import uniform
-from math import sqrt, exp
-
-
-def activation(act_func: ActivationEnum, val: float) -> float:
-    switcher = {
-        ActivationEnum.relu: lambda x: max(0, x),
-        ActivationEnum.sigmoid: lambda x: 1 / (1 + exp(- x))
-    }
-    func = switcher.get(act_func, lambda: "Invalid activation function")
-    return func(val)
+from math import sqrt
 
 
 class NeuralNetwork:

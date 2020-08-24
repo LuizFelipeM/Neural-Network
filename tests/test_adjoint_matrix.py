@@ -1,5 +1,5 @@
 import unittest
-import src.matrix_utils as mu
+import src.utils.matrix_utils as mu
 
 
 class TestAdjointMatrix(unittest.TestCase):

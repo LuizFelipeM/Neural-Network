@@ -1,6 +1,6 @@
 import unittest
-import src.matrix_validators as mv
-import src.matrix_utils as mu
+import src.validators.matrix_validators as mv
+import src.utils.matrix_utils as mu
 
 
 class TestMatrixValidators(unittest.TestCase):

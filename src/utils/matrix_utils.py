@@ -1,6 +1,6 @@
 from copy import deepcopy
 from random import randrange
-import src.matrix_validators as mv
+import src.validators.matrix_validators as mv
 
 
 def initialize(rows: int, cols: int, default_val=0) -> list:
