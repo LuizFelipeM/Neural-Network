@@ -1,6 +1,16 @@
 import src.matrix_utils as mu
+from src.activation_enum import ActivationEnum
 from random import uniform
-from math import sqrt
+from math import sqrt, exp
+
+
+def activation(act_func: ActivationEnum, val: float) -> float:
+    switcher = {
+        ActivationEnum.relu: lambda x: max(0, x),
+        ActivationEnum.sigmoid: lambda x: 1 / (1 + exp(- x))
+    }
+    func = switcher.get(act_func, lambda: "Invalid activation function")
+    return func(val)
 
 
 class NeuralNetwork:
@@ -12,21 +22,19 @@ class NeuralNetwork:
         weights_inp_hid = mu.functionoal_initialize(
             hidden_quantity,
             input_quantity,
-            lambda *_: uniform(0, 1) * sqrt(2/input_quantity)
+            lambda *_: uniform(0, 1) * sqrt(2 / input_quantity)
         )
 
         weights_hid_out = mu.functionoal_initialize(
             output_quantity,
             hidden_quantity,
-            lambda *_: uniform(0, 1) * sqrt(2/hidden_quantity)
+            lambda *_: uniform(0, 1) * sqrt(2 / hidden_quantity)
         )
 
         biases = mu.initialize(input_quantity + hidden_quantity + output_quantity, 1)
-
-    # def activation(self):
 
     # def feedforward(self, *inputs):
 
     # def backpropagation(self):
 
-    # def train(self):
+    # def train(self, *inputs):
