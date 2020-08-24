@@ -5,12 +5,28 @@ from math import sqrt
 
 class NeuralNetwork:
     biases = []
-    weights = []
+    weights_inp_hid = []
+    weights_hid_out = []
 
     def __init__(self, input_quantity: int, hidden_quantity: int, output_quantity: int):
-        weights = mu.initialize(
+        weights_inp_hid = mu.functionoal_initialize(
             hidden_quantity,
             input_quantity,
-            lambda *_: uniform(0, 1) * sqrt(2/input_quantity))
-        biases = weights
-        # biases = mu.initialize(hidden_quantity, 1, randrange(0, 1))
+            lambda *_: uniform(0, 1) * sqrt(2/input_quantity)
+        )
+
+        weights_hid_out = mu.functionoal_initialize(
+            output_quantity,
+            hidden_quantity,
+            lambda *_: uniform(0, 1) * sqrt(2/hidden_quantity)
+        )
+
+        biases = mu.initialize(input_quantity + hidden_quantity + output_quantity, 1)
+
+    # def activation(self):
+
+    # def feedforward(self, *inputs):
+
+    # def backpropagation(self):
+
+    # def train(self):

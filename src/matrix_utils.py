@@ -23,7 +23,7 @@ def initialize(rows: int, cols: int, default_val=0) -> list:
     return result
 
 
-def initialize(rows: int, cols: int, initialization_function=randrange, *initialization_args) -> list:
+def functionoal_initialize(rows: int, cols: int, initialization_function=randrange, *initialization_args) -> list:
     result = []
     if rows == 1 and cols == 1:
         return [initialization_function(*initialization_args)]
@@ -147,7 +147,25 @@ def mult(matrix1: list, matrix2: list) -> list:
         return mult_core_matrices(matrix1, matrix2, result)
 
 
-def determinant(matrix: list, row= 0) -> float:
+def hadamard(*matrices):
+    dims = mv.lengths(matrices[0])
+    for matrix in matrices:
+        if dims[0] != mv.lengths(matrix)[0] or dims[1] != mv.lengths(matrix)[1]:
+            raise Exception("Matrices' lengths do not match! \n\n"
+                            + str(mv.lengths(matrix))
+                            + str(mv.lengths(matrices[0]))
+                            )
+
+    result = initialize(dims[0], dims[1], 1)
+    for matrix in matrices:
+        for row in range(len(result)):
+            for col in range(len(result[row])):
+                result[row][col] *= matrix[row][col]
+
+    return result
+
+
+def determinant(matrix: list, row=0) -> float:
     mv.validate_square_matrix(matrix)
     result: float = 0
     cofacs = []

@@ -14,3 +14,9 @@ class TestMultMatrix(unittest.TestCase):
         m2 = [[1, 3, 0], [2, 1, 1]]
         result = [[8, 9, 3], [16, 18, 6]]
         self.assertEqual(mu.mult(m1, m2), result)
+
+    def test_hadamard_product(self):
+        m1 = [[3, 5, 7], [4, 9, 8]]
+        m2 = [[1, 6, 3], [0, 2, 9]]
+        result = [[3, 30, 21], [0, 18, 72]]
+        self.assertEqual(mu.hadamard(m1, m2), result)
