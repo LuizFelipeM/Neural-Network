@@ -12,13 +12,13 @@ class NeuralNetwork:
     weights_hid_out = []
 
     def __init__(self, input_quantity: int, hidden_quantity: int, output_quantity: int):
-        self.weights_inp_hid = mu.functionoal_initialize(
+        self.weights_inp_hid = mu.functional_initialize(
             input_quantity,
             hidden_quantity,
             lambda *_: uniform(0, 1) * sqrt(2 / input_quantity)
         )
 
-        self.weights_hid_out = mu.functionoal_initialize(
+        self.weights_hid_out = mu.functional_initialize(
             hidden_quantity,
             output_quantity,
             lambda *_: uniform(0, 1) * sqrt(2 / hidden_quantity)
@@ -43,6 +43,6 @@ class NeuralNetwork:
     def train(self, iterations: int, *inputs):
         res = self.__feedforward(inputs[0])
         # for inp in inputs:
-        #     self.__feedforward(inp)
+        #     self.__feedforward(inputs)
 
         return res

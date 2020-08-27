@@ -1,5 +1,5 @@
 from copy import deepcopy
-from random import randrange
+from random import randrange, seed
 import src.validators.matrix_validators as mv
 
 
@@ -23,24 +23,25 @@ def initialize(rows: int, cols: int, default_val=0) -> list:
     return result
 
 
-# def functionoal_initialize(rows: int, cols: int, initialization_function=randrange, *initialization_args) -> list:
-def functionoal_initialize(rows: int, cols: int, initialization_function=random.randrange, *initialization_args) -> list:
+def functional_initialize(rows: int, cols: int, initialization_function=None, *initialization_args) -> list:
     result = []
-    random.seed(5)
+    initialization_function = randrange if initialization_function is None else initialization_function
+    args = initialization_args if len(initialization_args) > 0 else (0, 1)
+    # seed(5)
     if rows == 1 and cols == 1:
-        return [initialization_function(*initialization_args)]
+        return [initialization_function(*args)]
     elif rows != 1 and cols == 1:
         for x in range(rows):
-            result.append(initialization_function(*initialization_args))
+            result.append(initialization_function(*args))
     elif rows == 1 and cols != 1:
         for y in range(cols):
-            result.append(initialization_function(*initialization_args))
+            result.append(initialization_function(*args))
         result = [result]
     else:
         for y in range(rows):
             row = []
             for x in range(cols):
-                row.append(initialization_function(*initialization_args))
+                row.append(initialization_function(*args))
             result.append(row)
     return result
 
