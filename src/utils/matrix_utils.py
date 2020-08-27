@@ -46,7 +46,8 @@ def functionoal_initialize(rows: int, cols: int, initialization_function=randran
 def sum(*matrices: list) -> list:
     dims = mv.lengths(matrices[0])
     for matrix in matrices:
-        if dims[0] != mv.lengths(matrix)[0] or dims[1] != mv.lengths(matrix)[1]:
+        ma_dims = mv.lengths(matrix)
+        if dims[0] != ma_dims[0] or dims[1] != ma_dims[1]:
             raise Exception("Matrices' lengths do not match! \n\n"
                             + str(mv.lengths(matrix))
                             + str(mv.lengths(matrices[0]))
