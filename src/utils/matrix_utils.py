@@ -27,7 +27,7 @@ def functional_initialize(rows: int, cols: int, initialization_function=None, *i
     result = []
     initialization_function = randrange if initialization_function is None else initialization_function
     args = initialization_args if len(initialization_args) > 0 else (0, 1)
-    # seed(5)
+    seed(5)
     if rows == 1 and cols == 1:
         return [initialization_function(*args)]
     elif rows != 1 and cols == 1:
