@@ -1,5 +1,5 @@
 import unittest
-import src.utils.matrix_utils as mu
+import utils.matrix_utils as mu
 
 
 class TestSumMatrix(unittest.TestCase):

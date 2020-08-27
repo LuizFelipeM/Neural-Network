@@ -1,4 +1,4 @@
-from src.activation_enum import ActivationEnum
+from activation_enum import ActivationEnum
 from math import exp
 
 

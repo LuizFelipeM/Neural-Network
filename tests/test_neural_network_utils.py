@@ -1,6 +1,6 @@
 import unittest
-import src.utils.neural_network_utils as nu
-from src.activation_enum import ActivationEnum
+import utils.neural_network_utils as nu
+from activation_enum import ActivationEnum
 
 
 class TestNeuralNetworkUtils(unittest.TestCase):

@@ -1,8 +1,8 @@
 from random import uniform
 from math import sqrt
-from src.activation_enum import ActivationEnum
-import src.utils.matrix_utils as mu
-import src.utils.neural_network_utils as nu
+from activation_enum import ActivationEnum
+import utils.matrix_utils as mu
+import utils.neural_network_utils as nu
 
 
 class NeuralNetwork:
