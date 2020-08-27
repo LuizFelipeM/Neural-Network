@@ -23,8 +23,10 @@ def initialize(rows: int, cols: int, default_val=0) -> list:
     return result
 
 
-def functionoal_initialize(rows: int, cols: int, initialization_function=randrange, *initialization_args) -> list:
+# def functionoal_initialize(rows: int, cols: int, initialization_function=randrange, *initialization_args) -> list:
+def functionoal_initialize(rows: int, cols: int, initialization_function=random.randrange, *initialization_args) -> list:
     result = []
+    random.seed(5)
     if rows == 1 and cols == 1:
         return [initialization_function(*initialization_args)]
     elif rows != 1 and cols == 1:
