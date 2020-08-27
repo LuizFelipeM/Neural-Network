@@ -1,5 +1,5 @@
 from copy import deepcopy
-from random import randrange
+import random
 import src.validators.matrix_validators as mv
 
 
