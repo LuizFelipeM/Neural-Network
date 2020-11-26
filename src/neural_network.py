@@ -6,6 +6,7 @@ import src.utils.neural_network_utils as nu
 
 
 class NeuralNetwork:
+    learning_ratio = 0.3
     biases_hid = []
     biases_out = []
     weights_inp_hid = []
@@ -27,22 +28,25 @@ class NeuralNetwork:
         self.biases_hid = mu.initialize(1, hidden_quantity)
         self.biases_out = mu.initialize(1, output_quantity)
 
-    def __feedforward(self, inputs: list):
-        res_hid = mu.mult(inputs, self.weights_inp_hid)
-        res_hid = mu.sum(res_hid, self.biases_hid)
-        res_hid = nu.activate_layer(ActivationEnum.relu, res_hid)
+    def __feedforward_hid(self, inputs: list):
+        net = mu.mult(inputs, self.weights_inp_hid)
+        net = mu.sum(net, self.biases_hid)
+        res = nu.activate_layer(ActivationEnum.relu, net)
 
-        res_out = mu.mult(res_hid, self.weights_hid_out)
-        res_out = mu.sum(res_out, self.biases_out)
-        res_out = nu.activate_layer(ActivationEnum.sigmoid, res_out)
+        return net, res
 
-        return res_out
+    def __feedforward_out(self, inputs: list):
+        net = mu.mult(inputs, self.weights_hid_out)
+        net = mu.sum(net, self.biases_out)
+        res = nu.activate_layer(ActivationEnum.sigmoid, net)
 
-    # def __backpropagation(self):
+        return net, res
+
+    # def __backpropagation_core(self):
+
+    # def __backpropagation(self, exp):
 
     def train(self, iterations: int, *inputs):
-        res = self.__feedforward(inputs[0])
+        # res = self.__feedforward(inputs[0])
         # for inp in inputs:
         #     self.__feedforward(inputs)
-
-        return res
